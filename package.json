@@ -1,16 +1,4 @@
 {
-  "name": "bot-whatsapp-vendas",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": { "start": "node index.js" },
-  "dependencies": {
-    "@whiskeysockets/baileys": "^6.7.8",
-    "@hapi/boom": "^10.0.1",
-    "qrcode-terminal": "^0.12.0"
-  },
-  "engines": { "node": "18.x" }
-}
-{
   "name": "bot-whatsapp",
   "version": "1.0.0",
   "main": "index.js",
@@ -18,7 +6,10 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@whiskeysockets/baileys": "^6.6.0",
+    "@whiskeysockets/baileys": "^6.7.8",
     "express": "^4.18.2"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
