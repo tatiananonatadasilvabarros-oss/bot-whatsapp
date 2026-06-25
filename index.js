@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+global.crypto = crypto;
 const { default: makeWASocket, DisconnectReason, useMultiFileAuthState } = require('@whiskeysockets/baileys')
 const { Boom } = require('@hapi/boom')
 const qrcode = require('qrcode-terminal')
