@@ -1,32 +1,28 @@
-const crypto = require('crypto');
-global.crypto = crypto;
+const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys')
 
-const { default: makeWASocket, useMultiFileAuthState } = require('@whiskeysockets/baileys')
-const qrcode = require('qrcode-terminal')
-
-async function startBot() {
-    const { state, saveCreds } = await useMultiFileAuthState('auth_info_' + Date.now())
+async function connectToWhatsApp() {
+    const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys')
     
     const sock = makeWASocket({
         auth: state,
-        browser: ['Bot WhatsApp', 'Chrome', '1.0.0']
+        printQRInTerminal: true, // ESSA LINHA É OBRIGATÓRIA NO RENDER
+        browser: ['Ubuntu', 'Chrome', '20.0.04']
     })
 
     sock.ev.on('connection.update', (update) => {
-        const { connection, qr } = update
+        const { connection, lastDisconnect } = update
         
-        if(qr) {
-            console.log('===== ESCANEIA O QR CODE AGORA =====')
-            qrcode.generate(qr, { small: false })
-            console.log('===================================')
-        }
-        
-        if(connection === 'open') {
-            console.log('BOT CONECTADO NO WHATSAPP!')
+        if(connection === 'close') {
+            const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut
+            if(shouldReconnect) {
+                connectToWhatsApp()
+            }
+        } else if(connection === 'open') {
+            console.log('CONECTADO! BOT ONLINE!')
         }
     })
 
     sock.ev.on('creds.update', saveCreds)
 }
 
-startBot()
+connectToWhatsApp()
