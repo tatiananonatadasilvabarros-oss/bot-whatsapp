@@ -6,8 +6,7 @@ const { Boom } = require('@hapi/boom')
 const qrcode = require('qrcode-terminal')
 
 async function connectToWhatsApp() {
-    const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys')
-    
+const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys_' + Date.now())    
     const sock = makeWASocket({
         auth: state,
         printQRInTerminal: true, // FORÇA O QR CODE
