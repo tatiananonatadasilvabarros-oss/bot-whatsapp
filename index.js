@@ -9,9 +9,8 @@ async function connectToWhatsApp() {
         browser: ['Ubuntu', 'Chrome', '20.0.04']
     })
 
-   5511995507551
     if (!sock.authState.creds.registered) {
-        const phoneNumber = '55XXXXXXXXXXX' // COLOCA SEU NÚMERO AQUI COM DDI 55 + DDD
+        const phoneNumber = '5511995507551' // SEU NÚMERO AQUI COM 55+DDD
         const code = await sock.requestPairingCode(phoneNumber)
         console.log(`SEU CÓDIGO DE PAREAMENTO: ${code}`)
     }
