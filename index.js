@@ -1,16 +1,20 @@
+const { webcrypto } = require('node:crypto')
+globalThis.crypto = webcrypto
+
 const { default: makeWASocket, useMultiFileAuthState } = require('@whiskeysockets/baileys')
+const express = require('express')
 
 async function connectToWhatsApp() {
     const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys')
     
     const sock = makeWASocket({
         auth: state,
-        printQRInTerminal: false, // Desliga QR
+        printQRInTerminal: false,
         browser: ['Ubuntu', 'Chrome', '20.0.04']
     })
 
     if (!sock.authState.creds.registered) {
-        const phoneNumber = '5511995507551' // SEU NÚMERO AQUI COM 55+DDD
+        const phoneNumber = '5511995507551'
         const code = await sock.requestPairingCode(phoneNumber)
         console.log(`SEU CÓDIGO DE PAREAMENTO: ${code}`)
     }
@@ -26,10 +30,8 @@ async function connectToWhatsApp() {
 }
 
 connectToWhatsApp()
-// Mantém o Render vivo
-const express = require('express')
+
 const app = express()
 const PORT = process.env.PORT || 3000
-
 app.get('/', (req, res) => res.send('Bot online'))
-app.listen(PORT, () => console.log(`Servidor fake na porta ${PORT}`))
+app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`))
