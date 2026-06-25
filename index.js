@@ -1,5 +1,7 @@
 const { webcrypto } = require('node:crypto')
 globalThis.crypto = webcrypto
+const { webcrypto } = require('node:crypto')
+globalThis.crypto = webcrypto
 
 const { default: makeWASocket, useMultiFileAuthState } = require('@whiskeysockets/baileys')
 const express = require('express')
