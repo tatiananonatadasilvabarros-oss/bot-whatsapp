@@ -3,21 +3,20 @@ globalThis.crypto = webcrypto
 
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys')
 const express = require('express')
-const qrcode = require('qrcode-terminal') // <-- ADICIONA ISSO
+const qrcode = require('qrcode-terminal')
 
 async function connectToWhatsApp() {
     const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys')
     
     const sock = makeWASocket({
         auth: state,
-        printQRInTerminal: true, // <-- MUDA PRA TRUE
+        printQRInTerminal: true,
         browser: ['Ubuntu', 'Chrome', '20.0.04']
     })
 
     sock.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect, qr } = update
         
-        // Se tiver QR Code, mostra no log
         if(qr) {
             console.log('ESCANEIA O QR CODE ABAIXO:')
             qrcode.generate(qr, {small: true})
@@ -26,9 +25,7 @@ async function connectToWhatsApp() {
         if(connection === 'close') {
             const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut
             console.log('Conexão fechada, reconectando:', shouldReconnect)
-            if(shouldReconnect) {
-                connectToWhatsApp()
-            }
+            if(shouldReconnect) connectToWhatsApp()
         } else if(connection === 'open') {
             console.log('BOT CONECTADO! PODE FECHAR O LOG')
         }
